@@ -11,7 +11,7 @@
     <version>2.0.0</version>
   </parent>
   <description>Processing application to detect vessels from S-1 SAR images</description>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1</version>
   <properties>
     <summary>Processing application to detect vessels from S-1 SAR images</summary>
     <description>Processing application to detect vessels from S-1 SAR images</description>
@@ -60,18 +60,16 @@
         </plugins>
       </build>
     </profile>
-
     <profile>
       <id>package-app</id>
       <activation>
-         <property>
-           <name>env</name>
-           <value>ci</value>
-         </property>
+        <property>
+          <name>env</name>
+          <value>ci</value>
+        </property>
       </activation>
       <build>
         <plugins>
-
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -84,7 +82,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>app_descriptor_generator</executable>
+                  <executable>/opt/anaconda/bin/app_descriptor_generator</executable>
                   <arguments>
                     <argument>${basedir}/src/main/app-resources/application_template.xml</argument>
                     <argument>${basedir}/src/main/app-resources/application.xml</argument>
@@ -95,7 +93,6 @@
               </execution>
             </executions>
           </plugin>
-
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>rpm-maven-plugin</artifactId>
@@ -112,10 +109,10 @@
                     <require>miniconda</require>
                     <require>OTB</require>
                     <require>java-1.8.0-openjdk-devel</require>
-                    <require>snap6</require> 
+                    <require>snap6</require>
                   </requires>
                   <postinstallScriptlet combine.self="override">
-                    <script>conda update conda -y &amp;&amp; conda install -y --file /application/dependencies/python/packages.list &amp;&amp; cp /application/notebook/etc/snappy.ini /opt/anaconda/lib/python2.7/site-packages/snappy/snappy.ini</script>
+                    <script>conda update conda -y &amp;&amp; conda install -y --file /application/dependencies/python/packages.list &amp;&amp; cp /application/notebook/etc/snappy.ini /opt/anaconda/lib/python2.7/site-packages/snappy/snappy.ini &amp;&amp; cp /application/notebook/etc/snap.auxdata.properties /opt/snap6/etc/snap.auxdata.properties</script>
                   </postinstallScriptlet>
                 </configuration>
               </execution>
